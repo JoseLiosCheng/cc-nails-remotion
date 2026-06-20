@@ -7,10 +7,14 @@ const { renderStill, selectComposition } = require('@remotion/renderer');
 const app = express();
 app.use(express.json({ limit: '10mb' }));
 
+// Serve public folder so Remotion can access images via localhost
+app.use('/assets', express.static(path.join(__dirname, 'public')));
+
 const OUTPUT_DIR = path.join(__dirname, 'output');
 if (!fs.existsSync(OUTPUT_DIR)) fs.mkdirSync(OUTPUT_DIR);
 
 let bundleLocation = null;
+let serverPort = null;
 
 async function getBundle() {
   if (!bundleLocation) {
@@ -30,26 +34,31 @@ app.get('/health', (req, res) => res.json({ status: 'ok' }));
 
 // Render thumbnail
 app.post('/render/thumbnail', async (req, res) => {
-  const { titulo, subtitulo, instructorImage, outputName } = req.body;
+  const { titulo, subtitulo, palabraClave, instructorUrl, outputName } = req.body;
 
   if (!titulo) return res.status(400).json({ error: 'titulo is required' });
+
+  // Default: serve cesia.png from this same server so Chromium can access it
+  const photoUrl = instructorUrl || `http://localhost:${serverPort}/assets/cesia.png`;
 
   try {
     const bundlePath = await getBundle();
     const fileName = `thumbnail_${outputName || Date.now()}.jpeg`;
     const outputPath = path.join(OUTPUT_DIR, fileName);
 
+    const inputProps = { titulo, subtitulo, palabraClave, instructorUrl: photoUrl };
+
     const composition = await selectComposition({
       serveUrl: bundlePath,
       id: 'Thumbnail',
-      inputProps: { titulo, subtitulo, instructorImage },
+      inputProps,
     });
 
     await renderStill({
       composition,
       serveUrl: bundlePath,
       output: outputPath,
-      inputProps: { titulo, subtitulo, instructorImage },
+      inputProps,
       frame: 59,
       imageFormat: 'jpeg',
       jpegQuality: 90,
@@ -65,4 +74,7 @@ app.post('/render/thumbnail', async (req, res) => {
 });
 
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => console.log(`Remotion render server running on port ${PORT}`));
+app.listen(PORT, () => {
+  serverPort = PORT;
+  console.log(`Remotion render server running on port ${PORT}`);
+});
