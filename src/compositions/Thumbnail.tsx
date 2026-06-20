@@ -1,20 +1,25 @@
 import React from 'react';
-import { AbsoluteFill, Img, interpolate, spring, staticFile, useCurrentFrame, useVideoConfig } from 'remotion';
+import { AbsoluteFill, Img, interpolate, spring, useCurrentFrame, useVideoConfig } from 'remotion';
 import { loadFont } from '@remotion/google-fonts/Montserrat';
 
 const { fontFamily } = loadFont();
+
+const DEFAULT_INSTRUCTOR = 'https://raw.githubusercontent.com/JoseLiosCheng/cc-nails-remotion/main/public/cesia.png';
 
 interface ThumbnailProps {
   titulo: string;
   palabraClave?: string;
   subtitulo?: string;
+  instructorUrl?: string;
 }
 
 export const Thumbnail: React.FC<ThumbnailProps> = ({
   titulo,
   palabraClave,
   subtitulo,
+  instructorUrl,
 }) => {
+  const photoSrc = instructorUrl || DEFAULT_INSTRUCTOR;
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
 
@@ -174,7 +179,7 @@ export const Thumbnail: React.FC<ThumbnailProps> = ({
         transformOrigin: 'bottom center',
       }}>
         <Img
-          src={staticFile('cesia.png')}
+          src={photoSrc}
           style={{
             height: '105%',
             width: 'auto',
