@@ -166,29 +166,18 @@ export const Thumbnail: React.FC<ThumbnailProps> = ({
       </div>
 
       {/* INSTRUCTOR PHOTO — right side */}
-      <div style={{
-        position: 'absolute',
-        right: 0, bottom: 0,
-        width: '48%',
-        height: '100%',
-        display: 'flex',
-        alignItems: 'flex-end',
-        justifyContent: 'center',
-        opacity: photoOpacity,
-        transform: `scale(${photoScale})`,
-        transformOrigin: 'bottom center',
-      }}>
-        <Img
-          src={photoSrc}
-          style={{
-            height: '105%',
-            width: 'auto',
-            objectFit: 'contain',
-            objectPosition: 'bottom center',
-            mixBlendMode: 'multiply',
-          }}
-        />
-      </div>
+      <Img
+        src={photoSrc}
+        style={{
+          position: 'absolute',
+          right: 0,
+          bottom: 0,
+          height: '108%',
+          width: 'auto',
+          opacity: photoOpacity,
+          mixBlendMode: 'multiply',
+        }}
+      />
     </AbsoluteFill>
   );
 };
