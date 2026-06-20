@@ -79,25 +79,6 @@ export const Thumbnail: React.FC<ThumbnailProps> = ({
         padding: '60px 40px 60px 70px',
       }}>
 
-        {/* Logo en pill blanco */}
-        <div style={{
-          display: 'inline-flex',
-          alignItems: 'center',
-          backgroundColor: '#FFFFFF',
-          borderRadius: 100,
-          padding: '10px 24px',
-          marginBottom: 28,
-          width: 'fit-content',
-          opacity: tagOpacity,
-        }}>
-          {logoUrl && (
-            <Img
-              src={logoUrl}
-              style={{ height: 90, width: 'auto' }}
-            />
-          )}
-        </div>
-
         {/* Keyword — huge accent */}
         {palabraClave && (
           <div style={{
@@ -151,6 +132,21 @@ export const Thumbnail: React.FC<ThumbnailProps> = ({
           </div>
         )}
       </div>
+
+      {/* LOGO — firma inferior izquierda */}
+      {logoUrl && (
+        <Img
+          src={logoUrl}
+          style={{
+            position: 'absolute',
+            left: 60,
+            bottom: 40,
+            height: 156,
+            width: 'auto',
+            opacity: tagOpacity,
+          }}
+        />
+      )}
 
       {/* INSTRUCTOR PHOTO — right side, sin blend */}
       {photoSrc && (
