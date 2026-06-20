@@ -2,7 +2,7 @@ const express = require('express');
 const path = require('path');
 const fs = require('fs');
 const { bundle } = require('@remotion/bundler');
-const { renderMedia, selectComposition } = require('@remotion/renderer');
+const { renderStill, selectComposition } = require('@remotion/renderer');
 
 const app = express();
 app.use(express.json({ limit: '10mb' }));
@@ -44,15 +44,14 @@ app.post('/render/thumbnail', async (req, res) => {
       inputProps: { titulo, subtitulo, instructorImage },
     });
 
-    await renderMedia({
+    await renderStill({
       composition,
       serveUrl: bundlePath,
-      codec: 'gif',
-      imageFormat: 'jpeg',
-      outputLocation: outputPath,
+      output: outputPath,
       inputProps: { titulo, subtitulo, instructorImage },
-      // Render only last frame as still image
-      frameRange: [59, 59],
+      frame: 59,
+      imageFormat: 'jpeg',
+      jpegQuality: 90,
     });
 
     res.download(outputPath, fileName, (err) => {
