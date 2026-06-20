@@ -14,8 +14,9 @@ export const RemotionRoot: React.FC = () => {
         width={BRAND.thumbnailWidth}
         height={BRAND.thumbnailHeight}
         defaultProps={{
-          titulo: 'Título del Video',
-          subtitulo: 'CC Nails Academy',
+          titulo: 'Manicura desde Cero',
+          palabraClave: 'APRENDE',
+          subtitulo: 'Gratis y Certificado',
         }}
       />
     </>
