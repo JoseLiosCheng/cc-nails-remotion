@@ -93,7 +93,7 @@ export const Thumbnail: React.FC<ThumbnailProps> = ({
           {logoUrl && (
             <Img
               src={logoUrl}
-              style={{ height: 52, width: 'auto' }}
+              style={{ height: 90, width: 'auto' }}
             />
           )}
         </div>
