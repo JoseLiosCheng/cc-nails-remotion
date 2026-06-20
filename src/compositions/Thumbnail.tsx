@@ -4,13 +4,12 @@ import { loadFont } from '@remotion/google-fonts/Montserrat';
 
 const { fontFamily } = loadFont();
 
-const DEFAULT_INSTRUCTOR = 'https://raw.githubusercontent.com/JoseLiosCheng/cc-nails-remotion/main/public/cesia.png';
-
 interface ThumbnailProps {
   titulo: string;
   palabraClave?: string;
   subtitulo?: string;
   instructorUrl?: string;
+  logoUrl?: string;
 }
 
 export const Thumbnail: React.FC<ThumbnailProps> = ({
@@ -18,26 +17,23 @@ export const Thumbnail: React.FC<ThumbnailProps> = ({
   palabraClave,
   subtitulo,
   instructorUrl,
+  logoUrl,
 }) => {
-  const photoSrc = instructorUrl || DEFAULT_INSTRUCTOR;
+  const photoSrc = instructorUrl || '';
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
 
   const fadeIn = interpolate(frame, [0, 20], [0, 1], { extrapolateRight: 'clamp' });
-
   const titleSlide = interpolate(frame, [8, 28], [-40, 0], { extrapolateRight: 'clamp' });
   const titleOpacity = interpolate(frame, [8, 28], [0, 1], { extrapolateRight: 'clamp' });
-
-  const photoScale = spring({ frame, fps, from: 1.06, to: 1, config: { damping: 18, stiffness: 80 } });
   const photoOpacity = interpolate(frame, [0, 25], [0, 1], { extrapolateRight: 'clamp' });
-
   const tagOpacity = interpolate(frame, [18, 32], [0, 1], { extrapolateRight: 'clamp' });
 
   return (
     <AbsoluteFill
       style={{
         fontFamily,
-        background: 'linear-gradient(135deg, #8B0050 0%, #D4006A 40%, #F03D8C 75%, #F9A8D4 100%)',
+        background: 'linear-gradient(135deg, #3A0A2E 0%, #6B1250 35%, #9E2D6B 65%, #C86090 100%)',
         overflow: 'hidden',
         opacity: fadeIn,
       }}
@@ -83,32 +79,23 @@ export const Thumbnail: React.FC<ThumbnailProps> = ({
         padding: '60px 40px 60px 70px',
       }}>
 
-        {/* CC Nails tag */}
+        {/* Logo en pill blanco */}
         <div style={{
           display: 'inline-flex',
           alignItems: 'center',
-          gap: 8,
-          backgroundColor: 'rgba(255,255,255,0.18)',
-          border: '2px solid rgba(255,255,255,0.4)',
+          backgroundColor: '#FFFFFF',
           borderRadius: 100,
-          padding: '8px 22px',
+          padding: '10px 24px',
           marginBottom: 28,
           width: 'fit-content',
           opacity: tagOpacity,
         }}>
-          <div style={{
-            width: 10, height: 10, borderRadius: '50%',
-            backgroundColor: '#FFE4F0',
-          }} />
-          <span style={{
-            color: '#FFE4F0',
-            fontSize: 20,
-            fontWeight: 700,
-            letterSpacing: 2.5,
-            textTransform: 'uppercase',
-          }}>
-            CC Nails Academy
-          </span>
+          {logoUrl && (
+            <Img
+              src={logoUrl}
+              style={{ height: 52, width: 'auto' }}
+            />
+          )}
         </div>
 
         {/* Keyword — huge accent */}
@@ -155,7 +142,7 @@ export const Thumbnail: React.FC<ThumbnailProps> = ({
             opacity: tagOpacity,
           }}>
             <span style={{
-              color: '#D4006A',
+              color: '#6B1250',
               fontSize: 26,
               fontWeight: 800,
             }}>
@@ -165,19 +152,20 @@ export const Thumbnail: React.FC<ThumbnailProps> = ({
         )}
       </div>
 
-      {/* INSTRUCTOR PHOTO — right side */}
-      <Img
-        src={photoSrc}
-        style={{
-          position: 'absolute',
-          right: 0,
-          bottom: 0,
-          height: '108%',
-          width: 'auto',
-          opacity: photoOpacity,
-          mixBlendMode: 'multiply',
-        }}
-      />
+      {/* INSTRUCTOR PHOTO — right side, sin blend */}
+      {photoSrc && (
+        <Img
+          src={photoSrc}
+          style={{
+            position: 'absolute',
+            right: 0,
+            bottom: 0,
+            height: '108%',
+            width: 'auto',
+            opacity: photoOpacity,
+          }}
+        />
+      )}
     </AbsoluteFill>
   );
 };

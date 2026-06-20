@@ -40,13 +40,14 @@ app.post('/render/thumbnail', async (req, res) => {
 
   // Default: serve cesia.png from this same server so Chromium can access it
   const photoUrl = instructorUrl || `http://localhost:${serverPort}/assets/cesia.png`;
+  const logoUrl = `http://localhost:${serverPort}/assets/logo.png`;
 
   try {
     const bundlePath = await getBundle();
     const fileName = `thumbnail_${outputName || Date.now()}.jpeg`;
     const outputPath = path.join(OUTPUT_DIR, fileName);
 
-    const inputProps = { titulo, subtitulo, palabraClave, instructorUrl: photoUrl };
+    const inputProps = { titulo, subtitulo, palabraClave, instructorUrl: photoUrl, logoUrl };
 
     const composition = await selectComposition({
       serveUrl: bundlePath,
