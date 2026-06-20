@@ -17,6 +17,7 @@ async function getBundle() {
     console.log('Bundling Remotion project...');
     bundleLocation = await bundle({
       entryPoint: path.join(__dirname, 'src/index.ts'),
+      publicDir: path.join(__dirname, 'public'),
       webpackOverride: (config) => config,
     });
     console.log('Bundle ready.');
